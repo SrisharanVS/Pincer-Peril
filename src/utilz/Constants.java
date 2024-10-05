@@ -7,7 +7,13 @@ public class Constants {
         public static final int RIGHT = 2;
         public static final int DOWN = 3;
     }
-
+    public static class Projectile {
+        public static final int BULLET_DEFAULT_WIDTH = 15;
+        public static final int BULLET_DEFAULT_HEIGHT = 15;
+        public static final int BULLET_WIDTH = 15;
+        public static final int BULLET_HEIGHT = 15;
+        public static final float SPEED = 15;
+    }
     public static class PlayerConstants {
         public static final int IDLE = 0;
         public static final int RUNNING = 1;
