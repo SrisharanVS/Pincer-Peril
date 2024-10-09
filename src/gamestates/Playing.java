@@ -27,8 +27,8 @@ public class Playing extends State implements Statemethods {
 	private boolean paused = false;
 
 	public static int xLvlOffset;
-	private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
-	private int rightBorder = (int) (0.8 * Game.GAME_WIDTH);
+	private int leftBorder = (int) (0.4 * Game.GAME_WIDTH);
+	private int rightBorder = (int) (0.6 * Game.GAME_WIDTH);
 	private int lvlTilesWide = LoadSave.GetLevelData()[0].length;
 	private int maxTilesOffset = lvlTilesWide - Game.TILES_IN_WIDTH;
 	private int maxLvlOffsetX = maxTilesOffset * Game.TILES_SIZE;
@@ -48,7 +48,7 @@ public class Playing extends State implements Statemethods {
 		smallCloud = LoadSave.GetSpriteAtlas(LoadSave.SMALL_CLOUDS);
 		smallCloudsPos = new int[8];
 		for (int i = 0; i < smallCloudsPos.length; i++)
-			smallCloudsPos[i] = (int) (90 * Game.SCALE) + rnd.nextInt((int) (100 * Game.SCALE));
+			smallCloudsPos[i] = (int) (5 * Game.SCALE) + rnd.nextInt((int) (50 * Game.SCALE));
 	}
 
 	private void initClasses() {
@@ -147,7 +147,7 @@ public class Playing extends State implements Statemethods {
 			case KeyEvent.VK_D:
 				player.setRight(true);
 				break;
-			case KeyEvent.VK_SPACE:
+			case KeyEvent.VK_W:
 				player.setJump(true);
 				break;
 			case KeyEvent.VK_C:
@@ -169,7 +169,7 @@ public class Playing extends State implements Statemethods {
 			case KeyEvent.VK_D:
 				player.setRight(false);
 				break;
-			case KeyEvent.VK_SPACE:
+			case KeyEvent.VK_W:
 				player.setJump(false);
 				break;
 				case KeyEvent.VK_C:
