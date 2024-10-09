@@ -26,7 +26,7 @@ public class Playing extends State implements Statemethods {
 	private GameOverOverlay gameOverOverlay;
 	private boolean paused = false;
 
-	private int xLvlOffset;
+	public static int xLvlOffset;
 	private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
 	private int rightBorder = (int) (0.8 * Game.GAME_WIDTH);
 	private int lvlTilesWide = LoadSave.GetLevelData()[0].length;
@@ -106,8 +106,8 @@ public class Playing extends State implements Statemethods {
 	}
 
 	private void drawClouds(Graphics g) {
-		for (int i = 0; i < 3; i++)
-			g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * Game.SCALE), BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
+//		for (int i = 0; i < 3; i++)
+//			g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * Game.SCALE), BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
 
 		for (int i = 0; i < smallCloudsPos.length; i++)
 			g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int) (xLvlOffset * 0.7), smallCloudsPos[i], SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT, null);
@@ -150,6 +150,9 @@ public class Playing extends State implements Statemethods {
 			case KeyEvent.VK_SPACE:
 				player.setJump(true);
 				break;
+			case KeyEvent.VK_C:
+				player.setShoot(true);
+				break;
 			case KeyEvent.VK_ESCAPE:
 				paused = !paused;
 				break;
@@ -169,6 +172,9 @@ public class Playing extends State implements Statemethods {
 			case KeyEvent.VK_SPACE:
 				player.setJump(false);
 				break;
+				case KeyEvent.VK_C:
+					player.setShoot(false);
+					break;
 			}
 
 	}

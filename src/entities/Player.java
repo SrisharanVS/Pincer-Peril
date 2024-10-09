@@ -1,5 +1,6 @@
 package entities;
 
+import static utilz.Constants.EnemyConstants.SHOOT;
 import static utilz.Constants.PlayerConstants.*;
 import static utilz.HelpMethods.*;
 
@@ -8,29 +9,33 @@ import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Float;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import gamestates.Playing;
 import main.Game;
+import utilz.Constants;
 import utilz.LoadSave;
+//import gamestates.Playing.xLvlOffset;
 
 public class Player extends Entity {
+	private Playing playingg;
 	private BufferedImage[][] animations;
 	private int aniTick, aniIndex, aniSpeed = 25;
 	private int playerAction = IDLE;
 	private boolean moving = false, attacking = false;
-	private boolean left, up, right, down, jump;
+	private boolean left, up, right, down, jump, shoot;
 	private float playerSpeed = 1.0f * Game.SCALE;
 	private int[][] lvlData;
 	private float xDrawOffset = 21 * Game.SCALE;
 	private float yDrawOffset = 4 * Game.SCALE;
-
+	public int direction = 1;
 	// Jumping / Gravity
 	private float airSpeed = 0f;
 	private float gravity = 0.04f * Game.SCALE;
 	private float jumpSpeed = -2.25f * Game.SCALE;
 	private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
 	private boolean inAir = false;
-
 	// StatusBarUI
 	private BufferedImage statusBarImg;
 
@@ -49,24 +54,30 @@ public class Player extends Entity {
 	private int healthWidth = healthBarWidth;
 
 	// AttackBox
-	private Rectangle2D.Float attackBox;
+	private Float attackBox;
 
 	private int flipX = 0;
 	private int flipW = 1;
-
+	private int xLvlOffsetP;
 	private boolean attackChecked;
 	private Playing playing;
+
+	//Shooting
+	private final List<Bullet> bulletList;
+	private boolean shooting = false;
 
 	public Player(float x, float y, int width, int height, Playing playing) {
 		super(x, y, width, height);
 		this.playing = playing;
+		this.xLvlOffsetP = playingg.xLvlOffset;
 		loadAnimations();
 		initHitbox(x, y, (int) (20 * Game.SCALE), (int) (27 * Game.SCALE));
+		bulletList = new ArrayList<>();
 		initAttackBox();
 	}
 
 	private void initAttackBox() {
-		attackBox = new Rectangle2D.Float(x, y, (int) (20 * Game.SCALE), (int) (20 * Game.SCALE));
+		attackBox = new Float(x, y, (int) (20 * Game.SCALE), (int) (20 * Game.SCALE));
 	}
 
 	public void update() {
@@ -84,6 +95,15 @@ public class Player extends Entity {
 			checkAttack();
 		updateAnimationTick();
 		setAnimation();
+		for (int i = 0; i < bulletList.size(); i++) {
+			Bullet bullet;
+			bullet = bulletList.get(i);
+			bullet.update();
+			if (!bullet.isActive()) {
+				bulletList.remove(i);
+				i--;
+			}
+		}
 	}
 
 	private void checkAttack() {
@@ -108,9 +128,17 @@ public class Player extends Entity {
 	}
 
 	public void render(Graphics g, int lvlOffset) {
-		g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset + flipX, (int) (hitbox.y - yDrawOffset), width * flipW, height, null);
-//		drawHitbox(g, lvlOffset);
-//		drawAttackBox(g, lvlOffset);
+		if(playerAction != SHOOT) {
+			g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset + flipX, (int) (hitbox.y - yDrawOffset), width * flipW, height, null);
+			//		drawHitbox(g, lvlOffset);
+			//		drawAttackBox(g, lvlOffset);
+		}
+			else if (playerAction == SHOOT) {
+			g.drawImage(animations[IDLE][aniIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset + flipX, (int) (hitbox.y - yDrawOffset), width * flipW, height, null);
+		}
+		for (Bullet bullet : bulletList) {
+			bullet.render(g);
+		}
 		drawUI(g);
 	}
 
@@ -146,6 +174,10 @@ public class Player extends Entity {
 
 		if (moving)
 			playerAction = RUNNING;
+		else if(shooting)
+		{
+			playerAction = SHOOT;
+		}
 		else
 			playerAction = IDLE;
 
@@ -189,11 +221,13 @@ public class Player extends Entity {
 			xSpeed -= playerSpeed;
 			flipX = width;
 			flipW = -1;
+			this.direction = -1;
 		}
 		if (right) {
 			xSpeed += playerSpeed;
 			flipX = 0;
 			flipW = 1;
+			this.direction = 1;
 		}
 
 		if (!inAir)
@@ -216,6 +250,10 @@ public class Player extends Entity {
 
 		} else
 			updateXPos(xSpeed);
+		if(shoot)
+		{
+			shooting = true;
+		}
 		moving = true;
 	}
 
@@ -311,6 +349,16 @@ public class Player extends Entity {
 		this.jump = jump;
 	}
 
+	public void setShoot(boolean shoot)
+	{
+		this.shoot = shoot;
+		if(shoot) {
+			System.out.println(this.direction);
+			System.out.println(x+120+":"+y);
+			Bullet bullet = new Bullet(((int) (hitbox.x - xDrawOffset) - xLvlOffsetP + flipX), (int) (hitbox.y - yDrawOffset), this.direction);
+			bulletList.add(bullet);
+		}
+	}
 	public void resetAll() {
 		resetDirBooleans();
 		inAir = false;

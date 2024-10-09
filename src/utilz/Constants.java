@@ -12,6 +12,7 @@ public class Constants {
 		public static final int ATTACK = 2;
 		public static final int HIT = 3;
 		public static final int DEAD = 4;
+		public static final int SHOOT = 5;
 
 		public static final int CRABBY_WIDTH_DEFAULT = 72;
 		public static final int CRABBY_HEIGHT_DEFAULT = 32;
@@ -35,6 +36,8 @@ public class Constants {
 					return 7;
 				case HIT:
 					return 4;
+				case SHOOT:
+					return SHOOT;
 				case DEAD:
 					return 5;
 				}
