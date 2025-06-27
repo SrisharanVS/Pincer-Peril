@@ -4,11 +4,9 @@ A Java-based 2D platformer game featuring dynamic gameplay, enemy interactions, 
 
 ![Screenshot From 2025-06-27 10-19-48](https://github.com/user-attachments/assets/4dacab11-9945-43df-b403-7a12ec69b2b6)
 
-![Screenshot From 2025-06-27 10-20-31](https://github.com/user-attachments/assets/b8319387-b938-42c8-8714-c8dee51585ac)
+![Screenshot From 2025-06-27 10-20-46](https://github.com/user-attachments/assets/7e7e1373-0ee1-497f-8e49-900b9c146cb0)
 
 ![Screenshot From 2025-06-27 10-20-39](https://github.com/user-attachments/assets/3259ee14-ab39-49d8-81ad-ab527c490359)
-
-![Screenshot From 2025-06-27 10-20-46](https://github.com/user-attachments/assets/7e7e1373-0ee1-497f-8e49-900b9c146cb0)
 
 ## 🎮 Game Features
 
